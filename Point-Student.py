@@ -13,7 +13,7 @@ class Point:
 
 
   def __str__(self):
-    s = "Point of coordinates ({:.4f}, {:.4f})".format(self.get_abs(), self.get_abs())
+    s = "Point of coordinates ({:.4f}, {:.4f})".format(self.get_abs(), self.get_ord())
     return(s)
 	
   def get_abs(self):
