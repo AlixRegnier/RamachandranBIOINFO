@@ -50,6 +50,8 @@ class StructurePDB:
   def compute_dihedrals(self):
     """
     Functions that computes dihedral angles
+    source for definition of phi and psi
+    https://proteopedia.org/wiki/index.php/Phi_and_Psi_Angles
     """
     phi = [] # list of floats
     psi = [] # list of floats
