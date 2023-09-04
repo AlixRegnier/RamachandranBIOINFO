@@ -49,12 +49,26 @@ class StructurePDB:
     phi = [] # list of floats
     psi = [] # list of floats
     self.phipsi = [] # list of Points (class Point...)
-	
-    phi.append(0.00)
-    
-    aa = self.residues[0]
-   
+    for i  in range(0,len(self.residues)):
+      if i > 0 :
+        phi.append(self.residues[i-1].get_C()\
+                  .dihedral(self.residues[i].get_N(),\
+                            self.residues[i].get_CA(),\
+                              self.residues[i].get_C()))
+      else :
+        phi.append(None)
 
+      if i < len(self.residues) :
+        psi.append((self.residues[i].get_N())\
+                  .dihedral(self.residues[i].get_CA(),\
+                              self.residues[i].get_C(),\
+                                  self.residues[i+1].get_N()))
+      else :
+        psi.append(None)
+      self.phipsi.append(Point(phi[-1],psi[-1]))
+
+    return [phi,psi]
+  
 
   def write_dihedrals(self, filename):
     """
