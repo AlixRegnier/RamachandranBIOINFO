@@ -9,6 +9,7 @@ git pull
 
 **Envoyer les modifications**
 ```sh
+git add FICHIER1 FICHIER2 ...
 git commit -m "DESCRIPTION COURTE ET IMPORTANTE DES MODIFICATIONS"
 git push
 ```
