@@ -9,7 +9,7 @@ git pull
 
 Envoyer les modifications
 ```sh
-git commit -m "DESCRIPTION COURTE ET IMPORTE DES MODIFICATIONS"
+git commit -m "DESCRIPTION COURTE ET IMPORTANTE DES MODIFICATIONS"
 git push
 ```
 
