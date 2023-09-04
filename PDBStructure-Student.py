@@ -81,7 +81,11 @@ class StructurePDB:
     """
     Functions that writes a file with 2 columns phi and psi separated by a tabulation, with one line per residue. Values of phi and psi angles are given with a precision of 6 decimals.
     """
- 
+    phi_psi=self.compute_dihedrals()
+    with open (filename, "w") as output_file:
+      if len(phi_psi[0]) == len(phi_psi[1]):
+        for i in range (len(phi_psi[0])):
+          output_file.write(phi_psi[0][i] + "\t" + phi_psi[1][i] + "\n") 
     
     
 #	public static void main(String[] args) throws FileNotFoundException{
