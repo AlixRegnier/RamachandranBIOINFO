@@ -27,13 +27,18 @@ class StructurePDB:
       if atom_type not in ["N","CA","C","O"]:
         continue
       
-      residue_type = line[17:20].strip()
+      residue_number = line[24:26].strip()
       
-      if (residue_type != previous_res_type):
-        aa = AminoAcid(residue_type, [])
+      if residue_number == 1 :
+        aa = AminoAcid(line[17:20].strip(), [])
         self.residues.append(aa)
-        previous_res_type = residue_type
-      
+        previous_res_number = residue_number
+        
+      if residue_number != previous_res_number:
+        aa = AminoAcid(line[17:20].strip(), [])
+        self.residues.append(aa)
+        previous_res_number = residue_number
+
       coordX = float(line[31:38].strip())
       coordY = float(line[39:46].strip())
       coordZ = float(line[47:54].strip())
