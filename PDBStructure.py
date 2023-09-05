@@ -3,7 +3,6 @@ from Atom import Atom
 from Point import Point
 
 class StructurePDB:
-	
   def __init__(self, filename): 
     """
     Functions that reads a simple PDB file and the necessary information about residues to compute dihedral angles
@@ -11,40 +10,46 @@ class StructurePDB:
     self.path_to_file = filename
     self.residues = []
     
-    fd = open(self.path_to_file,'r')
-    lines = fd.readlines()
-    fd.close()
-    
-    for line in lines:
-      
-      if len(line) < 5:
-        continue
-      
-      if line[0:4] != "ATOM":
-        continue
-      
-      atom_type = line[11:16].strip()
-      if atom_type not in ["N","CA","C","O"]:
-        continue
-      
-      residue_number = line[24:26].strip()
-      
-      if residue_number == 1 :
-        aa = AminoAcid(line[17:20].strip(), [])
-        self.residues.append(aa)
-        previous_res_number = residue_number
+    with open(self.path_to_file,'r') as in_file: 
+      for line in in_file:
+        i=1
+        if len(line) < 5:
+          continue
         
-      if residue_number != previous_res_number:
-        aa = AminoAcid(line[17:20].strip(), [])
-        self.residues.append(aa)
-        previous_res_number = residue_number
+        if line[0:4] != "ATOM":
+          continue
+        
+        atom_type = line[11:16].strip()
+        residue_number = int(line[24:26].strip())
 
-      coordX = float(line[31:38].strip())
-      coordY = float(line[39:46].strip())
-      coordZ = float(line[47:54].strip())
-      atom = Atom(atom_type, coordX, coordY, coordZ)
-
-      self.residues[-1].add(atom)
+          
+        coordX = float(line[31:38].strip())
+        coordY = float(line[39:46].strip())
+        coordZ = float(line[47:54].strip())
+        
+        if i==1:
+          aa_backbone=[]
+          aa_sidechain=[] 
+          i=+1
+          previous_residue_number = residue_number
+          previous_residue_type=line[18:20]
+        
+        if residue_number != previous_residue_number :
+          self.residues.append(AminoAcid(previous_residue_type,previous_residue_number,aa_backbone,aa_sidechain))
+          previous_residue_type=line[18:20]
+          previous_residue_number = residue_number
+          aa_backbone=[]
+          aa_sidechain=[]
+        
+        if residue_number == previous_residue_number:
+          if atom_type in ["N","CA","C","O"]:
+            aa_backbone.append(Atom(atom_type,coordX, coordY, coordZ))
+          if atom_type not in ["N","CA","C","O"] and "H" not in atom_type:
+            aa_sidechain.append(Atom(atom_type,coordX, coordY, coordZ))
+          previous_residue_number = residue_number
+        
+        if line == "ENDMDL":
+          break
 
 
   def compute_dihedrals(self):
