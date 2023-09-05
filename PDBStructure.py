@@ -25,29 +25,18 @@ class StructurePDB:
     #for i  in range(0,len(self.residues)):
 
     for residue_number in (0,len(self.get_residues())):
-      aa=self.get_residues()[residue_number]
-      for atome in aa.get_backbone():
-        if atome.get_name()=="CA":
-          ca = atome
-        elif atome.get_name()=="C":
-          c = atome
-        elif atome.get_name()=="N":
-          n = atome
+      n=(self.get_residues()[residue_number]).get_N()
+      c=(self.get_residues()[residue_number]).get_C()
+      ca=(self.get_residues()[residue_number]).get_CA()
 
       if residue_number > 0 :
-        ab=self.get_residues()[residue_number-1]
-        for atome in ab.get_backbone():
-          if atome.get_name()=="C":
-            previous_aa_c=atome
+        previous_aa_c=(self.get_residues()[residue_number-1]).get_C()
         phi.append(Atom.dihedral(previous_aa_c,n,c,ca))
       else :
         phi.append(None)
       
       if residue_number < len(self.get_residues()):
-        ab=self.get_residues()[residue_number+1]
-        for atome in ab.get_backbone():
-          if atome.get_name()=="N":
-            next_aa_N=atome       
+        next_aa_N=(self.get_residues()[residue_number+1]).get_N()   
         psi.append(Atom.dihedral(n,c,ca,next_aa_N))
       else:
         psi.append(None)
@@ -120,7 +109,6 @@ class StructurePDB:
         
       if new_model:
         new_model.sort(key=lambda x:x.res_number)
-        
         
         model_list.append(StructurePDB(new_model))
 
