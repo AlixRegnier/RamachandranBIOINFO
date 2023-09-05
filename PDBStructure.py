@@ -3,53 +3,12 @@ from Atom import Atom
 from Point import Point
 
 class StructurePDB:
-  def __init__(self, filename): 
+  def __init__(self, AminoAcidlist): 
     """
     Functions that reads a simple PDB file and the necessary information about residues to compute dihedral angles
     """
-    self.path_to_file = filename
-    self.residues = []
-    
-    with open(self.path_to_file,'r') as in_file: 
-      for line in in_file:
-        i=1
-        if len(line) < 5:
-          continue
-        
-        if line[0:4] != "ATOM":
-          continue
-        
-        atom_type = line[11:16].strip()
-        residue_number = int(line[24:26].strip())
-
-          
-        coordX = float(line[31:38].strip())
-        coordY = float(line[39:46].strip())
-        coordZ = float(line[47:54].strip())
-        
-        if i==1:
-          aa_backbone=[]
-          aa_sidechain=[] 
-          i=+1
-          previous_residue_number = residue_number
-          previous_residue_type=line[18:20]
-        
-        if residue_number != previous_residue_number :
-          self.residues.append(AminoAcid(previous_residue_type,previous_residue_number,aa_backbone,aa_sidechain))
-          previous_residue_type=line[18:20]
-          previous_residue_number = residue_number
-          aa_backbone=[]
-          aa_sidechain=[]
-        
-        if residue_number == previous_residue_number:
-          if atom_type in ["N","CA","C","O"]:
-            aa_backbone.append(Atom(atom_type,coordX, coordY, coordZ))
-          if atom_type not in ["N","CA","C","O"] and "H" not in atom_type:
-            aa_sidechain.append(Atom(atom_type,coordX, coordY, coordZ))
-          previous_residue_number = residue_number
-        
-        if line == "ENDMDL":
-          break
+    self.residues=AminoAcidlist
+    self.phipsi=[]
 
 
   def compute_dihedrals(self):
@@ -92,7 +51,67 @@ class StructurePDB:
         for i in range (len(phi_psi[0])):
           output_file.write(phi_psi[0][i] + "\t" + phi_psi[1][i] + "\n") 
     
-    
+  @staticmethod
+  def readPDB(filename):
+    model_list=[]
+    with open(filename,"r") as in_file:
+      new_model=[]
+      backbone=[]
+      sidechain=[]
+      i=0
+      endmdl=0
+      for line in in_file:
+        if line[0:4] =! "ATOM":
+          continue
+        
+        residue_number=line[24:26].strip()
+        residue_type=line[17:20].strip()
+
+        coordX = float(line[31:38].strip())
+        coordY = float(line[39:46].strip())
+        coordZ = float(line[47:54].strip())
+
+        if i==0:
+          residue_type=line[17:20].strip()
+          old_residue_type=residue_type
+          old_residue_number=residue_number
+          i+=1
+        
+        if residue_number != old_residue_number:
+          new_model.append(AminoAcid(old_residue_type,old_residue_number,backbone,sidechain))
+
+          old_residue_number=residue_number
+          old_residue_type=residue_type
+          backbone=[]
+          sidechain=[]
+        
+        elif residue_number == old_residue_number:
+          if line[11:16].strip() is in ["N","CA","C","O"]:
+            backbone.append(Atom(line[11:16].strip(),coordX,coordY,coordZ))
+          
+          elif "H" not in line[11:16].strip():
+            sidechain.append(Atom(line[11:16].strip(),coordX,coordY,coordZ))
+        
+        if line=="ENDMDL":
+          new_model.sort(key=lambda x:x.res_number)
+          model_list.append(StructurePDB(new_model))
+          new_model=[]
+          backbone=[]
+          sidechain=[]
+          i=0
+          endmdl=1
+        
+        if line=="END" and endmdl==0:
+          new_model.sort(key=lambda x:x.res_number)
+          model_list.append(StructurePDB(new_model))
+
+      return model_list
+          
+
+
+
+
+
 #	public static void main(String[] args) throws FileNotFoundException{
 #		StructurePDB tey = new StructurePDB("D:/workspace/Enseignement/src/ramachandran/1TEY.pdb");
 #		tey.readPDBFile();
@@ -111,3 +130,4 @@ print(iS.residues[1])
 print(iS.residues[2])
 iS.compute_dihedrals()
 iS.write_dihedrals("angles_1TEY.txt")
+
