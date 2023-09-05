@@ -24,25 +24,25 @@ class StructurePDB:
     self.phipsi = [] # list of Points (class Point...)
     #for i  in range(0,len(self.residues)):
 
-    for residue_number in (0,len(self.get_residues())):
-      n=(self.get_residues()[residue_number]).get_N()
-      c=(self.get_residues()[residue_number]).get_C()
-      ca=(self.get_residues()[residue_number]).get_CA()
+    for resid_number in range(0,len(self.get_residues())):
+      n=(self.get_residues()[resid_number]).get_N()
+      c=(self.get_residues()[resid_number]).get_C()
+      ca=(self.get_residues()[resid_number]).get_CA()
 
-      if residue_number > 0 :
-        previous_aa_c=(self.get_residues()[residue_number-1]).get_C()
-        phi.append(Atom.dihedral(previous_aa_c,n,c,ca))
+      if resid_number > 0 :
+        previous_aa_c=(self.get_residues()[resid_number-1]).get_C()
+        phi.append(Atom.dihedral(previous_aa_c, n, ca,c))
       else :
         phi.append(None)
       
-      if residue_number < len(self.get_residues()):
-        next_aa_N=(self.get_residues()[residue_number+1]).get_N()   
-        psi.append(Atom.dihedral(n,c,ca,next_aa_N))
+      if resid_number < len(self.get_residues())-1:
+        next_aa_N=(self.get_residues()[resid_number+1]).get_N()   
+        psi.append(Atom.dihedral(n,ca,c,next_aa_N))
       else:
         psi.append(None)
 
-      if residue_number > 0 and residue_number < len(self.get_residues()):
-        self.phipsi.append(Point(phi[residue_number],psi[residue_number]))
+      if resid_number > 0 and resid_number < len(self.get_residues()):
+        self.phipsi.append(Point(phi[resid_number],psi[resid_number]))
     
     return [phi,psi]
   
@@ -55,7 +55,12 @@ class StructurePDB:
     with open (filename, "w") as output_file:
       if len(phi_psi[0]) == len(phi_psi[1]):
         for i in range (len(phi_psi[0])):
-          output_file.write(phi_psi[0][i] + "\t" + phi_psi[1][i] + "\n") 
+          if i == 0:
+            output_file.write(f"None\t{phi_psi[1][i]:.6f}\n")
+          elif i == len(phi_psi[0]) - 1:
+            output_file.write(f'{phi_psi[0][i]:.6f}\tNone\n') 
+          else:
+            output_file.write(f'{phi_psi[0][i]:.6f}\t{phi_psi[1][i]:.6f}\n') 
     
   @staticmethod
   def readPDB(filename):
@@ -69,7 +74,7 @@ class StructurePDB:
       for line in in_file:    
 
         if line.strip()=="ENDMDL":
-          new_model.sort(key = lambda x: x.res_number)
+          #new_model.sort(key = lambda x: x.res_number)
           model_list.append(StructurePDB(new_model))
           new_model=[]
           backbone=[]
@@ -100,15 +105,14 @@ class StructurePDB:
           backbone=[]
           sidechain=[]
         
-        elif residue_number == old_residue_number:
-          if line[11:16].strip() in ["N","CA","C","O"]:
-            backbone.append(Atom(line[11:16].strip(),coordX,coordY,coordZ))
-          
-          elif "H" not in line[11:16].strip():
-            sidechain.append(Atom(line[11:16].strip(),coordX,coordY,coordZ))
+        if line[11:16].strip() in ["N","CA","C","O"]:
+          backbone.append(Atom(line[11:16].strip(),coordX,coordY,coordZ))
+        
+        elif "H" not in line[11:16].strip():
+          sidechain.append(Atom(line[11:16].strip(),coordX,coordY,coordZ))
         
       if new_model:
-        new_model.sort(key=lambda x:x.res_number)
+        #new_model.sort(key=lambda x:x.res_number)
         
         model_list.append(StructurePDB(new_model))
 
@@ -134,6 +138,6 @@ class StructurePDB:
 iS = StructurePDB.readPDB("1TEY.pdb")
 
 
-iS[1].compute_dihedrals()
-iS[1].write_dihedrals("angles_1TEY.txt")
+iS[0].compute_dihedrals()
+iS[0].write_dihedrals("angles_1TEY.txt")
 
