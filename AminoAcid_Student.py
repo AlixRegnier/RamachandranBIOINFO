@@ -15,40 +15,32 @@ class AminoAcid :
     self.side_chain = dico_side_chain
 	
   def __str__(self):
-    s = "Amino acid number {} of type {} with a list of {} atoms and a side chain composed of {}".format(self.get_res_number(), self.get_res_type(), len(self.get_backbone()), self.get_side_chain())
+    s = "Amino acid number {} of type {} with a list of {} atoms".format(self.get_res_number(), self.get_res_type(), len(self.get_backbone()))
     return(s)    
     
   def get_N(self):
     """
     Function that returns an Atom corresponding to the N of the current residue
     """
-    for i in self.get_backbone().keys() :
-      if i == "N" :
-        return (self.get_backbone()[i])
+    return (self.get_backbone()["N"])
 
   def get_CA(self):
     """
     Function that returns an Atom corresponding to the CA of the current residue
     """
-    for i in self.get_backbone().keys() :
-      if i == "CA" :
-        return (self.get_backbone()[i])      
+    return (self.get_backbone()["CA"])      
 
   def get_C(self):
     """
     Function that returns an Atom corresponding to the C of the current residue
     """
-    for i in self.get_backbone().keys() :
-      if i == "C" :
-        return (self.get_backbone()[i])  	
+    return (self.get_backbone()["C"])  	
 
   def get_O(self):
     """
     Function that returns an Atom corresponding to the O of the current residue
     """
-    for i in self.get_backbone().keys():
-      if i == "O" :
-        return (self.get_backbone()[i])
+    return (self.get_backbone()["O"])
   
   def get_backbone(self):
     """
@@ -75,7 +67,7 @@ class AminoAcid :
     """
     Function that adds a new atom in the list of atoms for the current residue
     """
-    self.get_backbone().append(atom)
+    self.get_backbone()[atom.get_name()] = atom.get_coords()
   
   def set_res_type(self, new_type ):
     """
@@ -93,6 +85,7 @@ class AminoAcid :
     """
     Function that compute angle of all possible Chi.
     """
+    pass
 
 
 
@@ -105,9 +98,9 @@ if __name__ == "__main__":
   atom4=Atom("X",1,2,3)
   atomN=Atom("N",-1.115,8.537,7.075)
   atomCA=Atom("CA",-1.925,7.470,6.547)
-  Amino = AminoAcid("ALA",2, [atom2,atomCA,atom2,atom3])
+  #Amino = AminoAcid("ALA",2, [atom2,atomCA,atom2,atom3],[atom1])
   print(Amino.get_backbone())
-  print(Amino.get_CA())
+  print(Amino)
   """print(Amino)
   Amino.add(atom2)
   print(Amino)
