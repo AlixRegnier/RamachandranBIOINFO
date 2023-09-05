@@ -20,23 +20,7 @@ class StructurePDB:
     phi = [] # list of floats
     psi = [] # list of floats
     self.phipsi = [] # list of Points (class Point...)
-    for i  in range(0,len(self.residues)):
-      if i > 0 :
-        phi.append(self.residues[i-1].get_C()\
-                  .dihedral(self.residues[i].get_N(),\
-                            self.residues[i].get_CA(),\
-                              self.residues[i].get_C()))
-      else :
-        phi.append(None)
-
-      if i < len(self.residues) :
-        psi.append((self.residues[i].get_N())\
-                  .dihedral(self.residues[i].get_CA(),\
-                              self.residues[i].get_C(),\
-                                  self.residues[i+1].get_N()))
-      else :
-        psi.append(None)
-      self.phipsi.append(Point(phi[-1],psi[-1]))
+    #for i  in range(0,len(self.residues)):
 
     return [phi,psi]
   
@@ -59,9 +43,8 @@ class StructurePDB:
       backbone=[]
       sidechain=[]
       i=0
-      endmdl=0
       for line in in_file:
-        if line[0:4] =! "ATOM":
+        if line[0:4] != "ATOM":
           continue
         
         residue_number=line[24:26].strip()
@@ -86,7 +69,7 @@ class StructurePDB:
           sidechain=[]
         
         elif residue_number == old_residue_number:
-          if line[11:16].strip() is in ["N","CA","C","O"]:
+          if line[11:16].strip() in ["N","CA","C","O"]:
             backbone.append(Atom(line[11:16].strip(),coordX,coordY,coordZ))
           
           elif "H" not in line[11:16].strip():
@@ -99,11 +82,10 @@ class StructurePDB:
           backbone=[]
           sidechain=[]
           i=0
-          endmdl=1
         
-        if line=="END" and endmdl==0:
-          new_model.sort(key=lambda x:x.res_number)
-          model_list.append(StructurePDB(new_model))
+      if new_model:
+        new_model.sort(key=lambda x:x.res_number)
+        model_list.append(StructurePDB(new_model))
 
       return model_list
           
@@ -124,10 +106,9 @@ class StructurePDB:
 		
 #		k4.printOutput();
 #	}
-iS = StructurePDB("1TEY.pdb")
-print(iS.residues[0])
-print(iS.residues[1])
-print(iS.residues[2])
-iS.compute_dihedrals()
-iS.write_dihedrals("angles_1TEY.txt")
+iS = StructurePDB.readPDB("1TEY.pdb")
+
+print(iS)
+#iS.compute_dihedrals()
+#iS.write_dihedrals("angles_1TEY.txt")
 
