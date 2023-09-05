@@ -27,17 +27,17 @@ class StructurePDB:
     for residue_number in (0,len(self.get_residues())):
       aa=self.get_residues()[residue_number]
       for atome in aa.get_backbone():
-          if atome.get_name=="CA":
-            ca = atome
-          elif atome.get_name=="C":
-            c = atome
-          elif atome.get_name=="N":
-            n = atome
+        if atome.get_name()=="CA":
+          ca = atome
+        elif atome.get_name()=="C":
+          c = atome
+        elif atome.get_name()=="N":
+          n = atome
 
       if residue_number > 0 :
         ab=self.get_residues()[residue_number-1]
         for atome in ab.get_backbone():
-          if atome.get_name=="C":
+          if atome.get_name()=="C":
             previous_aa_c=atome
         phi.append(Atom.dihedral(previous_aa_c,n,c,ca))
       else :
@@ -46,14 +46,13 @@ class StructurePDB:
       if residue_number < len(self.get_residues()):
         ab=self.get_residues()[residue_number+1]
         for atome in ab.get_backbone():
-          if atome.get_name=="N":
-            next_aa_N=atome
-        
+          if atome.get_name()=="N":
+            next_aa_N=atome       
         psi.append(Atom.dihedral(n,c,ca,next_aa_N))
       else:
         psi.append(None)
 
-      if residue_number > 0 and residue_number < len(self.get_residues):
+      if residue_number > 0 and residue_number < len(self.get_residues()):
         self.phipsi.append(Point(phi[residue_number],psi[residue_number]))
     
     return [phi,psi]
@@ -81,7 +80,7 @@ class StructurePDB:
       for line in in_file:    
 
         if line.strip()=="ENDMDL":
-          new_model.sort(key=lambda x:x.res_number)
+          new_model.sort(key = lambda x: x.res_number)
           model_list.append(StructurePDB(new_model))
           new_model=[]
           backbone=[]
@@ -105,7 +104,7 @@ class StructurePDB:
           i+=1
         
         if residue_number != old_residue_number:
-          new_model.append(AminoAcid(old_residue_type,old_residue_number,backbone,sidechain))
+          new_model.append(AminoAcid(old_residue_type,old_residue_number,backbone, sidechain))
 
           old_residue_number=residue_number
           old_residue_type=residue_type
@@ -121,6 +120,8 @@ class StructurePDB:
         
       if new_model:
         new_model.sort(key=lambda x:x.res_number)
+        
+        
         model_list.append(StructurePDB(new_model))
 
       return model_list
@@ -145,6 +146,6 @@ class StructurePDB:
 iS = StructurePDB.readPDB("1TEY.pdb")
 
 
-#iS.compute_dihedrals()
-#iS.write_dihedrals("angles_1TEY.txt")
+iS[1].compute_dihedrals()
+iS[1].write_dihedrals("angles_1TEY.txt")
 
