@@ -2,21 +2,15 @@ from Atom_Student import Atom
 
 class AminoAcid : 
 
-  def __init__(self, res_type, res_number, list_atoms):
+  def __init__(self, res_type, res_number,backbone, side_chain):
     self.res_type = res_type
     self.res_number = res_number
-    self.atoms = list_atoms
+    self.backbone = backbone
+    self.side_chain = side_chain
 	
   def __str__(self):
-    s = "Amino acid number {} of type {} with a list of {} atoms".format(self.get_res_number(), self.get_res_type(), len(self.get_list_atom()))
+    s = "Amino acid number {} of type {} with a list of {} atoms and a side chain composed of {}".format(self.get_res_number(), self.get_res_type(), len(self.get_backbone()), self.get_side_chain())
     return(s)    
-    
-
-  def add(self, atom):
-    """
-    Function that adds a new atom in the list of atoms for the current residue
-    """
-    self.get_list_atom().append(atom)
     
   def get_N(self):
     """
@@ -51,11 +45,11 @@ class AminoAcid :
       if i.get_name() == "O" :
         return (i)
   
-  def get_list_atom(self):
+  def get_backbone(self):
     """
     Function that returns the list of Atoms of the AminoAcids
     """
-    return(self.atoms)
+    return(self.backbone)
   
   def get_res_number(self):
     """
@@ -68,6 +62,27 @@ class AminoAcid :
     Function that returns the type of the current residue
     """
     return(self.res_type)
+  
+  def get_side_chain(self):
+    return(self.side_chain)
+
+  def add(self, atom):
+    """
+    Function that adds a new atom in the list of atoms for the current residue
+    """
+    self.get_list_atom().append(atom)
+  
+  def set_res_type(self, new_type ):
+    """
+    Function that permit to change the type of the current residue
+    """
+    self.res_type = new_type
+  
+  def set_side_chain(self, new_chain ):
+    """
+    Function that permit to change the composition of the side chain
+    """
+    self.side_chain = new_chain
 
 if __name__ == "__main__":	
   print("Testing Class AminoAcid")
