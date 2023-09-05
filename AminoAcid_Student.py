@@ -2,14 +2,17 @@ from Atom_Student import Atom
 
 class AminoAcid : 
 
-  def __init__(self, res_type, res_number,list_backbone, side_chain = []):
+  def __init__(self, res_type, res_number,list_backbone, list_side_chain = []):
     self.res_type = res_type
     self.res_number = res_number
     dico_backbone = {}
     for atom_backbone in list_backbone :
       dico_backbone[atom_backbone.get_name()] = atom_backbone.get_coords()
     self.backbone =  dico_backbone
-    self.side_chain = side_chain
+    dico_side_chain = {}
+    for atom_side_chain in list_side_chain :
+      dico_side_chain[atom_side_chain.get_name()] = atom_side_chain.get_coords()
+    self.side_chain = dico_side_chain
 	
   def __str__(self):
     s = "Amino acid number {} of type {} with a list of {} atoms and a side chain composed of {}".format(self.get_res_number(), self.get_res_type(), len(self.get_backbone()), self.get_side_chain())
