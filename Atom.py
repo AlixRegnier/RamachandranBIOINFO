@@ -1,11 +1,4 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Thu Dec 10 18:14:32 2020
-
-@author: ebecker
-"""
-from math import sqrt 
-from math import acos
+from math import sqrt, acos
 
 class Atom:
   def __init__(self, name, px = 0.00, py = 0.00, pz = 0.00):
@@ -21,8 +14,7 @@ class Atom:
     """
     self.name = pname
  	
-
-  def set_coords(self, px, py, pz, new_x, new_y, new_z):
+  def set_coords(self, new_x, new_y, new_z):
     """
     Function that modifies the attributes x, y, z
     """
