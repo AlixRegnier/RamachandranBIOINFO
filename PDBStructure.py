@@ -10,6 +10,8 @@ class StructurePDB:
     self.residues=AminoAcidlist
     self.phipsi=[]
 
+  def get_residues(self):
+    return self.residues
 
   def compute_dihedrals(self):
     """
@@ -22,6 +24,38 @@ class StructurePDB:
     self.phipsi = [] # list of Points (class Point...)
     #for i  in range(0,len(self.residues)):
 
+    for residue_number in (0,len(self.get_residues())):
+      aa=self.get_residues()[residue_number]
+      for atome in aa.get_backbone():
+          if atome.get_name=="CA":
+            ca = atome
+          elif atome.get_name=="C":
+            c = atome
+          elif atome.get_name=="N":
+            n = atome
+
+      if residue_number > 0 :
+        ab=self.get_residues()[residue_number-1]
+        for atome in ab.get_backbone():
+          if atome.get_name=="C":
+            previous_aa_c=atome
+        phi.append(Atom.dihedral(previous_aa_c,n,c,ca))
+      else :
+        phi.append(None)
+      
+      if residue_number < len(self.get_residues()):
+        ab=self.get_residues()[residue_number+1]
+        for atome in ab.get_backbone():
+          if atome.get_name=="N":
+            next_aa_N=atome
+        
+        psi.append(Atom.dihedral(n,c,ca,next_aa_N))
+      else:
+        psi.append(None)
+
+      if residue_number > 0 and residue_number < len(self.get_residues):
+        self.phipsi.append(Point(phi[residue_number],psi[residue_number]))
+    
     return [phi,psi]
   
 
@@ -38,12 +72,22 @@ class StructurePDB:
   @staticmethod
   def readPDB(filename):
     model_list=[]
+    new_model=[]
+    backbone=[]
+    sidechain=[]
+    i=0
     with open(filename,"r") as in_file:
-      new_model=[]
-      backbone=[]
-      sidechain=[]
-      i=0
-      for line in in_file:
+
+      for line in in_file:    
+
+        if line.strip()=="ENDMDL":
+          new_model.sort(key=lambda x:x.res_number)
+          model_list.append(StructurePDB(new_model))
+          new_model=[]
+          backbone=[]
+          sidechain=[]
+          i=0
+        
         if line[0:4] != "ATOM":
           continue
         
@@ -75,14 +119,6 @@ class StructurePDB:
           elif "H" not in line[11:16].strip():
             sidechain.append(Atom(line[11:16].strip(),coordX,coordY,coordZ))
         
-        if line=="ENDMDL":
-          new_model.sort(key=lambda x:x.res_number)
-          model_list.append(StructurePDB(new_model))
-          new_model=[]
-          backbone=[]
-          sidechain=[]
-          i=0
-        
       if new_model:
         new_model.sort(key=lambda x:x.res_number)
         model_list.append(StructurePDB(new_model))
@@ -108,7 +144,7 @@ class StructurePDB:
 #	}
 iS = StructurePDB.readPDB("1TEY.pdb")
 
-print(iS)
+
 #iS.compute_dihedrals()
 #iS.write_dihedrals("angles_1TEY.txt")
 
