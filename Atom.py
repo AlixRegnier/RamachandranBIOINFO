@@ -14,7 +14,6 @@ class Atom:
     """
     self.name = pname
  	
-
   def set_coords(self, new_x, new_y, new_z):
     """
     Function that modifies the attributes x, y, z
