@@ -7,11 +7,11 @@ class AminoAcid :
     self.res_number = res_number
     dico_backbone = {}
     for atom_backbone in list_backbone :
-      dico_backbone[atom_backbone.get_name()] = atom_backbone.get_coords()
+      dico_backbone[atom_backbone.get_name()] = atom_backbone
     self.backbone =  dico_backbone
     dico_side_chain = {}
     for atom_side_chain in list_side_chain :
-      dico_side_chain[atom_side_chain.get_name()] = atom_side_chain.get_coords()
+      dico_side_chain[atom_side_chain.get_name()] = atom_side_chain
     self.side_chain = dico_side_chain
 	
   def __str__(self):
