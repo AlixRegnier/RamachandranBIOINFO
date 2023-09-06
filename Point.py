@@ -4,7 +4,7 @@ class Point:
   ''' Creates and manipulates objects of type Point. '''
   
   def __init__(self, x = 0.00, y = 0.00):
-    ''' Initializates the class Point, which has two attributes: 
+    ''' Initializes the class Point, which has two attributes: 
         1)coordinate on x axis
         2)coordinate on y axis
         Parameters
