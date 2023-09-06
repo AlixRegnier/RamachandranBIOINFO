@@ -193,7 +193,6 @@ class Atom:
     --------
     float
       Value of the angle
-
     """
     return(acos(self.dot_product(another_atom)/(self.norm()*another_atom.norm())))
 	
