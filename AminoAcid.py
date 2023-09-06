@@ -93,7 +93,7 @@ class AminoAcid :
     if self.get_res_type() in Chi_2C :
       return Atom.dihedral(self.get_N(), self.get_CA(), self.get_side_chain()["CB"],self.get_side_chain()["CG"])
     
-    Chi_CG1= ["VAl", "ILE"]
+    Chi_CG1= ["VAL", "ILE"]
 
     if self.get_res_type() in Chi_CG1 :
       return Atom.dihedral(self.get_N(), self.get_CA(), self.get_side_chain()["CB"], self.get_side_chain()["CG1"])
@@ -103,6 +103,34 @@ class AminoAcid :
     
     if self.get_res_type() == "SER" :
       return Atom.dihedral(self.get_N(), self.get_CA(), self.get_side_chain()["CB"], self.get_side_chain()["OG"])
+    
+  def compute_Chi2(self):
+    Chi2_0 = ["ALA", "GLY", "VAL", "THR","SER", "CYS"]
+    if self.get_res_type() in Chi2_0:
+      return False
+    
+    Chi_2C= ["ARG", "GLN", "LYS", "GLU", "PRO","MET"]
+    if self.get_res_type() in Chi_2C :
+      return Atom.dihedral(self.get_CA(), self.get_side_chain()["CB"], self.get_side_chain()["CG"], self.get_side_chain()["CD"])
+
+    if self.get_res_type() == ["TYR","ILE", "PHE", "LEU"]:
+      return Atom.dihedral(self.get_CA(), self.get_side_chain()["CB"], self.get_side_chain()["CG"], self.get_side_chain()["CD1"])    
+
+    if self.get_res_type() == "TRP":
+      return Atom.dihedral(self.get_CA(), self.get_side_chain()["CB"], self.get_side_chain()["CG"], self.get_side_chain()["CD2"])
+    
+    if self.get_res_type() == "HIS":
+      return Atom.dihedral(self.get_CA(), self.get_side_chain()["CB"], self.get_side_chain()["CG"], self.get_side_chain()["ND1"])
+    
+    if self.get_res_type() == "ASN":
+      return Atom.dihedral(self.get_CA(), self.get_side_chain()["CB"], self.get_side_chain()["CG"], self.get_side_chain()["ND2"])
+    
+    if self.get_res_type() == "ASP":
+      return Atom.dihedral(self.get_CA(), self.get_side_chain()["CB"], self.get_side_chain()["CG"], self.get_side_chain()["OD2"])
+    
+    
+    
+
 
 if __name__ == "__main__":	
   print("Testing Class AminoAcid")
