@@ -3,21 +3,44 @@ from Atom import Atom
 from Point import Point
 
 class StructurePDB:
+  ''' Creates and manipulates objects of type StructurePDB. '''
+  
   def __init__(self, AminoAcidlist): 
-    """
-    Functions that reads a simple PDB file and the necessary information about residues to compute dihedral angles
-    """
+    ''' Initializes the class StructurePDB, which has two attributes: 
+        1)residues of the AA
+        2)list of angles phi and psi, li
+        Parameters
+        ----------
+        AminoAcidList = list
+        
+        Returns:
+        --------
+    '''
+    
     self.residues=AminoAcidlist
     self.phipsi=[]
 
   def get_residues(self):
+    ''' Returns the list of residues.
+        Parameters
+        ----------
+        
+        Returns:
+        --------
+        self.residues = list
+    '''
     return self.residues
 
   def compute_dihedrals(self):
-    """
-    Functions that computes dihedral angles
-    source for definition of phi and psi
-    https://proteopedia.org/wiki/index.php/Phi_and_Psi_Angles
+    """ Computes dihedral angles of the backbone and returns the list of lists each corresponding
+        to the calculated angles phi and psi respectively.
+        https://proteopedia.org/wiki/index.php/Phi_and_Psi_Angles
+        Parameters:
+        ----------
+        
+        Returns:
+        -------
+        list of lists
     """
     phi = [] # list of floats
     psi = [] # list of floats
@@ -48,8 +71,14 @@ class StructurePDB:
   
 
   def write_dihedrals(self, filename):
-    """
-    Functions that writes a file with 2 columns phi and psi separated by a tabulation, with one line per residue. Values of phi and psi angles are given with a precision of 6 decimals.
+    """ Writes a file with 2 columns phi and psi separated by a tabulation, with one line per residue. 
+        Values of phi and psi angles are given with a precision of 6 decimals.
+        Parameters:
+        ----------
+        filename = string
+        
+        Returns:
+        -------
     """
     phi_psi=self.compute_dihedrals()
     with open (filename, "w") as output_file:
@@ -63,6 +92,17 @@ class StructurePDB:
             output_file.write(f'{phi_psi[0][i]:.6f}\t{phi_psi[1][i]:.6f}\n') 
 
   def compute_chi1_chi_2(self,aa):
+    """ Computes dihedral angles of the lateral chain for a chosen amino acid passed as an argument.
+        It returns list of points corresponding to the calculated angles stored in form of objects 
+        of type Point. 
+        Parameters:
+        ----------
+        aa = string 
+        
+        Returns:
+        -------
+        chi_ch2_point_list = list    
+    """
     chi_ch2_point_list=[]
     for residue in self.get_residues():
       if residue.get_res_type() == aa:
@@ -76,11 +116,22 @@ class StructurePDB:
         if chi1 != None and chi2 != None:
           chi_ch2_point_list.append((Point(chi1,chi2)))
         else :
-          return False
+          raise RuntimeError
       return chi_ch2_point_list
 
   @staticmethod
   def readPDB(filename):
+    """ Reads a simple PDB file and the necessary information about residues to compute dihedral angles and
+        returns the information in form of the list. The list contains the objects of type StructurePDB,
+        each corresponding to one model of protein described in the parsed file.
+        Parameters:
+        ----------
+        filename = string
+        
+        Returns:
+        -------
+        model_list = list
+    """
     model_list=[]
     new_model=[]
     backbone=[]
