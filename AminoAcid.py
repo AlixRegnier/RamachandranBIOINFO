@@ -225,7 +225,49 @@ class AminoAcid :
     
     if self.get_res_type() == "ASP":
       return Atom.dihedral(self.get_CA(), self.get_side_chain()["CB"], self.get_side_chain()["CG"], self.get_side_chain()["OD2"])
-  
+
+  def compute_Chi4(self):
+    """
+    Function that computes Chi4 for the current amino acid.
+
+    return
+    ------
+      False : Boolean
+      False if there is no Chi4 for the current amino acid
+
+      atom.dihedral() : Int
+      The value of Chi4 of the current amino acid
+    """
+    Chi2_0 = ["ALA", "GLY", "VAL", "THR","SER", "CYS", "GLU", "PRO","MET", "GLN", "TYR","ILE", "PHE", "LEU", "TRP", "HIS", "ASN", "ASP"]
+    if self.get_res_type() in Chi2_0 or len(self.get_side_chain()) == 0:
+      return False
+    
+    if self.get_res_type() == "LYS":
+      return Atom.dihedral(self.get_side_chain()["CG"], self.get_side_chain()["CD"], self.get_side_chain()["CE"], self.get_side_chain()["NZ"])
+      
+    if self.get_res_type() == "ARG":
+      return Atom.dihedral(self.get_side_chain()["CG"], self.get_side_chain()["CD"], self.get_side_chain()["NE"], self.get_side_chain()["CZ"])
+    
+  def compute_Chi5(self):
+    """
+    Function that computes Chi5 for the current amino acid.
+
+    return
+    ------
+      False : Boolean
+      False if there is no Chi5 for the current amino acid
+
+      atom.dihedral() : Int
+      The value of Chi5 of the current amino acid
+    """
+    Chi2_0 = ["ALA", "GLY", "VAL", "THR","SER", "CYS", "GLU", "PRO","MET", "GLN", "TYR","ILE", "PHE", "LEU", "TRP", "HIS", "ASN", "ASP", "LYS"]
+    if self.get_res_type() in Chi2_0 or len(self.get_side_chain()) == 0:
+      return False
+
+    if self.get_res_type() == "ARG":
+      return Atom.dihedral(self.get_side_chain()["CD"], self.get_side_chain()["NE"], self.get_side_chain()["CZ"], self.get_side_chain()["NH2"])
+    
+
 
 
 if __name__ == "__main__":	
