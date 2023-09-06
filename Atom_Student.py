@@ -140,7 +140,6 @@ class Atom:
     else :
       return -angle
 
-
 if __name__ == "__main__":	
   print("Testing Class Atom")
   atom1 = Atom("H",18.0,9.5,192.5)
@@ -150,6 +149,7 @@ if __name__ == "__main__":
   atomN=Atom("N",-1.115,8.537,7.075)
   atomCA=Atom("CA",-1.925,7.470,6.547)
   print(atom1.dihedral(atom2,atom3,atom4))
+
   """
   print(atomN.norm())
   print(atomCA.norm())
