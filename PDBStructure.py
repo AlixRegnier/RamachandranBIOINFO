@@ -92,6 +92,7 @@ class StructurePDB:
 
         if line.strip()=="ENDMDL":
           #new_model.sort(key = lambda x: x.res_number)
+          new_model.append(AminoAcid(old_residue_type,old_residue_number,backbone, sidechain))
           model_list.append(StructurePDB(new_model))
           new_model=[]
           backbone=[]
@@ -101,7 +102,7 @@ class StructurePDB:
         if line[0:4] != "ATOM":
           continue
         
-        residue_number=line[24:26].strip()
+        residue_number=line[23:26].strip()
         residue_type=line[17:20].strip()
 
         coordX = float(line[31:38].strip())
@@ -155,6 +156,15 @@ class StructurePDB:
 iS = StructurePDB.readPDB("1TEY.pdb")
 
 
-iS[0].compute_dihedrals()
-iS[0].write_dihedrals("angles_1TEY.txt")
+
+
+dic=dict()
+for i in iS[0].get_residues():
+  print(i.get_res_type(), i.get_res_number(), len(i.get_backbone()), len(i.get_side_chain()))
+  if not (i.get_res_type() in dic):
+    dic[i.get_res_type()]=[len(i.get_side_chain())]
+  else:
+    dic[i.get_res_type()].append(len(i.get_side_chain()))
+
+print(dic)
 
