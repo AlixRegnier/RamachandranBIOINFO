@@ -11,16 +11,16 @@ class Point:
     return(s)
 	
   def get_abs(self):
-    return self.abs
+    return self.x
 	
   def get_ord(self):
-    return self.ord
+    return self.y
 
   def set_abs(self,new_abs):
-    self.abs=new_abs
+    self.x=new_abs
 
   def set_ord(self,new_ord):
-    self.ord=new_ord
+    self.y=new_ord
 
   def add(self, another_point):
     """
