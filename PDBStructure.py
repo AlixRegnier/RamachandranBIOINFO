@@ -62,13 +62,22 @@ class StructurePDB:
           else:
             output_file.write(f'{phi_psi[0][i]:.6f}\t{phi_psi[1][i]:.6f}\n') 
 
-    def compute_chi1_chi_2(self,aa):
-      chi_ch2_point_list=[]
-      for residue in self.get_residues():
-        if residue.get_res_type() == aa:
-
-
-
+  def compute_chi1_chi_2(self,aa):
+    chi_ch2_point_list=[]
+    for residue in self.get_residues():
+      if residue.get_res_type() == aa:
+        chi1=None
+        chi2=None
+        if residue.compute_Chi1():
+          chi1=residue.compute_Chi1()
+        if residue.compute_Chi2():
+          chi2=residue.compute_Chi2
+        if chi1 != None and chi2 != None:
+          chi_ch2_point_list.append((chi1,chi2))
+        elif chi1 != None and chi2 == None:
+          chi_ch2_point_list.append(chi1)
+        else :
+          return False
       return chi_ch2_point_list
 
   @staticmethod
