@@ -1,7 +1,36 @@
 from math import sqrt, acos
 
 class Atom:
+  """
+      Class that represent the Atoms, the name and the coordonates.
+
+      Attributes:
+      -----------
+      name : str
+          the name of the atom
+      px : float
+          the coordonate x of the point (atom). The default value is 0.00
+      py : float
+          the coordonate y of the point (atom). The default value is 0.00
+      pz : float
+          the coordonate z of the point (atom). The default value is 0.00
+
+  """
+
   def __init__(self, name, px = 0.00, py = 0.00, pz = 0.00):
+    """ Initialize the Class Atom
+
+    Parameters:
+    -----------
+      name : str
+          the name of the atom
+      px : float
+          the coordonate x of the point (atom). The default value is 0.00
+      py : float
+          the coordonate y of the point (atom). The default value is 0.00
+      pz : float
+          the coordonate z of the point (atom). The default value is 0.00
+    """
     self.name = name
     self.x = px
     self.y = py
@@ -10,13 +39,27 @@ class Atom:
 	
   def set_name(self, pname):
     """
-    Function that modifies the name
+    Function that modifies the name of the atom
+
+    Parameter:
+    ----------
+    pname : str
+        the new name of the atom
     """
     self.name = pname
  	
   def set_coords(self, new_x, new_y, new_z):
     """
-    Function that modifies the attributes x, y, z
+    Function that modifies the coordinates of the atom
+
+    Parameters:
+    -----------
+    new_x : float
+        the new coordinate x of the atom
+    new_y : float
+        the new coordinate y of the atom
+    new_z : float
+        the new coordinate z of the atom
     """
     self.x = new_x
     self.y = new_y
@@ -31,38 +74,44 @@ class Atom:
     
   def get_coords(self):
     """
-    Function that returns a list containing the coodinates (x,y,z)
+    Function that returns a tuple containing the coordinates (x,y,z) of the current instance
     """
     return(self.x, self.y, self.z)
 	
     
   def get_x(self):
     """
-    Function that returns the x coordinate
+    Function that returns the coordinate x of the current instance
     """
     return(self.x)
     
   
   def get_y(self):
     """
-    Function that returns the y coordinate
+    Function that returns the coordinate y of the current instance
     """
     return(self.y)
     
     
   def get_z(self):
+    """
+    Function that returns the coordinate z of the current instance
+    """
     return(self.z)
 
 
   def copy(self, another_atom):
     """
-    Function that copies the values of the current instance in a new atom passed as a parameter
+    Function that copies the values of the new atom passed as a parameter in the current instance.
     """
     self.set_name(another_atom.get_name())
     self.set_coords(another_atom.get_x(), another_atom.get_y(), another_atom.get_z())
   
   
   def __str__(self):
+    """
+    Function that returns a string containing the name and the coordinates of the current instance.
+    """
     s = "{} ({:.2f}, {:.2f}, {:.2f})".format(self.get_name(), self.get_x(), self.get_y(), self.get_z())
     return(s)
 	
@@ -70,6 +119,11 @@ class Atom:
   def norm(self):
     """
     Function that computes the norm of the vector from O to the current instance
+
+    Returns:
+    --------
+    float
+      value of the norm
     """
     return(sqrt((self.get_x()**2)+(self.get_y()**2)+(self.get_z()**2)))
 
@@ -77,6 +131,12 @@ class Atom:
   def distance(self, another_atom):
     """
     Function that computes the distance between the current instance and another atom
+
+    Returns:
+    --------
+    float
+      Value of the distance between two atoms
+
     """
     return(sqrt(((self.get_x()-another_atom.get_x())**2)+((self.get_y()-another_atom.get_y())**2)+((self.get_z()-another_atom.get_z())**2)))
 
@@ -84,6 +144,11 @@ class Atom:
   def substract(self, another_atom):
     """
     Function that computes the substraction between the current atom and the other atom passed as a parameter, and returns it as a new Atom with an empty name.
+
+    Returns:
+    --------
+    atom : object
+      Object containing an empty name, and the coordinates (x, y, z) of the new atom.
     """
     x=self.get_x()-another_atom.get_x()
     y=self.get_y()-another_atom.get_y()
@@ -94,6 +159,11 @@ class Atom:
   def dot_product(self, another_atom):
     """
     Function that computes the dot product between the current atom and the other atom passed as a parameter, and returns it as a float
+
+    Returns:
+    --------
+    float
+      Value of the dot product
     """
     return(((self.get_x()*another_atom.get_x())+(self.get_y()*another_atom.get_y())+(self.get_z()*another_atom.get_z())))
 
@@ -101,6 +171,11 @@ class Atom:
   def cross_product(self, another_atom):
     """
     Function that computes the cross product between the current atom and the other atom passed as a parameter, and returns it as a new Atom with an empty name.
+
+    Returns:
+    --------
+    atom : object
+      Object containing an empty name, and the coordinates (x, y, z) of the new atom.
     """
     cross1=(self.get_y()*another_atom.get_z())-(self.get_z()*another_atom.get_y())
     cross2=(self.get_z()*another_atom.get_x())-(self.get_x()*another_atom.get_z())
@@ -110,12 +185,25 @@ class Atom:
 
     
   def angle(self, another_atom):
+    """
+    Function that compute de value of the angle between the current atom and the other atom passed as a parameter.
+
+    Returns:
+    --------
+    float
+      Value of the angle
+    """
     return(acos(self.dot_product(another_atom)/(self.norm()*another_atom.norm())))
 	
 
   def dihedral(a1, a2, a3, a4):
     """
-    Function that computes dihedral angle (torsion angle) between 4 atoms. 
+    Function that computes dihedral angle (torsion angle) between 4 atoms.
+
+    Returns:
+    --------
+    float
+      Value of the dihedral angle 
     """
     v12 = a1.substract(a2)
     v23 = a2.substract(a3)
@@ -132,7 +220,6 @@ class Atom:
     else :
       return angle
 
-
 if __name__ == "__main__":	
   print("Testing Class Atom")
   atom1 = Atom("H",18.0,9.5,192.5)
@@ -141,7 +228,8 @@ if __name__ == "__main__":
   atom4=Atom("X",1,2,3)
   atomN=Atom("N",-1.115,8.537,7.075)
   atomCA=Atom("CA",-1.925,7.470,6.547)
-  print(atom1.dihedral(atom2,atom3,atom4))
+  #print(atom1.dihedral(atom2,atom3,atom4))
+
   """
   print(atomN.norm())
   print(atomCA.norm())
@@ -152,12 +240,13 @@ if __name__ == "__main__":
   print(atomN.dot_product(atomCA))
   print(atomN.cross_product(atomCA))
   print(atomN.angle(atomCA))
+  """
+
   #print(atom1.cross_product(atom2))
   #print(atom2.cross_product(atom1))
   #print(atom4.cross_product(atom1))
   #print(atom3.distance(atom4))
   #print(atom1.dot_product(atom2))
-  #print(atom1)
+  #print(atom2.dihedral(atom3, atom4, atom1))
   #print(atom2)
   #print(atom3)
-  """
