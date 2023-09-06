@@ -61,7 +61,16 @@ class StructurePDB:
             output_file.write(f'{phi_psi[0][i]:.6f}\tNone\n') 
           else:
             output_file.write(f'{phi_psi[0][i]:.6f}\t{phi_psi[1][i]:.6f}\n') 
-    
+
+    def compute_chi1_chi_2(self,aa):
+      chi_ch2_point_list=[]
+      for residue in self.get_residues():
+        if residue.get_res_type() == aa:
+
+
+
+      return chi_ch2_point_list
+
   @staticmethod
   def readPDB(filename):
     model_list=[]
