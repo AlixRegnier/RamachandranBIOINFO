@@ -295,8 +295,7 @@ class AminoAcid :
     Chi2_0 = ["ALA", "GLY", "VAL", "THR","SER", "CYS", "GLU", "PRO","MET", "GLN", "TYR","ILE", "PHE", "LEU", "TRP", "HIS", "ASN", "ASP", "LYS"]
     if self.get_res_type() in Chi2_0 or len(self.get_side_chain()) == 0:
       return False
-
-    if self.get_res_type() == "ARG":
+    else:
       return Atom.dihedral(self.get_side_chain()["CD"], self.get_side_chain()["NE"], self.get_side_chain()["CZ"], self.get_side_chain()["NH2"])
     
 
