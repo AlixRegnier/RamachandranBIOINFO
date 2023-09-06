@@ -57,7 +57,7 @@ class Atom:
 
   def copy(self, another_atom):
     """
-    Function that copies the values of the current instance in a new atom passed as a parameter
+    Function that copies the values of the new atom passed as a parameter in the current instance.
     """
     self.set_name(another_atom.get_name())
     self.set_coords(another_atom.get_x(), another_atom.get_y(), another_atom.get_z())
