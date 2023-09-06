@@ -1,4 +1,4 @@
-from Atom_Student import Atom
+from Atom import Atom
 
 class AminoAcid : 
 

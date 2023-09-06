@@ -1,11 +1,4 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Thu Dec 10 18:14:32 2020
-
-@author: ebecker
-"""
-from math import sqrt 
-from math import acos
+from math import sqrt, acos
 
 class Atom:
   def __init__(self, name, px = 0.00, py = 0.00, pz = 0.00):
@@ -22,13 +15,13 @@ class Atom:
     self.name = pname
  	
 
-  def set_coords(self, px, py, pz, new_x, new_y, new_z):
+  def set_coords(self, new_x, new_y, new_z):
     """
     Function that modifies the attributes x, y, z
     """
-    self.x= new_x
-    self.y=new_y
-    self.z=new_z	
+    self.x = new_x
+    self.y = new_y
+    self.z = new_z	
 
   def get_name(self):
     """
@@ -115,7 +108,7 @@ class Atom:
     cross3=(self.get_x()*another_atom.get_y())-(self.get_y()*another_atom.get_x())
     atom=Atom("",cross1,cross2,cross3)
     return(atom)
-    
+
     
   def angle(self, another_atom):
     return(acos(self.dot_product(another_atom)/(self.norm()*another_atom.norm())))
@@ -123,9 +116,22 @@ class Atom:
 
   def dihedral(a1, a2, a3, a4):
     """
-    Function that computes dihedral angle (torsion angle) between 4 atoms named a1 to a4
+    Function that computes dihedral angle (torsion angle) between 4 atoms. 
     """
+    v12 = a1.substract(a2)
+    v23 = a2.substract(a3)
+    v43 = a4.substract(a3)
 
+    v1 = v23.cross_product(v12)
+    v4 = v23.cross_product(v43)
+    v = v1.cross_product(v4)
+
+    angle = v1.angle(v4)
+
+    if v.dot_product(v23) > 0:
+      return angle
+    else :
+      return -angle
 
 if __name__ == "__main__":	
   print("Testing Class Atom")
@@ -135,6 +141,9 @@ if __name__ == "__main__":
   atom4=Atom("X",1,2,3)
   atomN=Atom("N",-1.115,8.537,7.075)
   atomCA=Atom("CA",-1.925,7.470,6.547)
+  print(atom1.dihedral(atom2,atom3,atom4))
+
+  """
   print(atomN.norm())
   print(atomCA.norm())
   print(atomN.distance(atomCA))
@@ -152,3 +161,4 @@ if __name__ == "__main__":
   #print(atom1)
   #print(atom2)
   #print(atom3)
+  """
