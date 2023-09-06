@@ -226,6 +226,38 @@ class AminoAcid :
     if self.get_res_type() == "ASP":
       return Atom.dihedral(self.get_CA(), self.get_side_chain()["CB"], self.get_side_chain()["CG"], self.get_side_chain()["OD2"])
 
+  def compute_chi3(self):
+    """
+    Function that computes Chi3 for the current amino acid.
+
+    return
+    ------
+      False : Boolean
+      False if there is no Chi3 for the current amino acid
+
+      atom.dihedral() : Int
+      The value of Chi3 of the current amino acid
+    """
+    Chi2_0 = ["ALA", "GLY", "VAL", "THR","SER", "CYS", "GLU", "PRO", "TYR","ILE", "PHE", "LEU", "TRP", "HIS", "ASN", "ASP"]
+    if self.get_res_type() in Chi2_0 or len(self.get_side_chain()) == 0:
+      return False
+    
+    if self.get_res_type() == "LYS":
+      return Atom.dihedral(self.get_side_chain()["CB"], self.get_side_chain()["CG"], self.get_side_chain()["CD"], self.get_side_chain()["CE"])
+    
+    if self.get_res_type() == "MET":
+      return Atom.dihedral(self.get_side_chain()["CB"], self.get_side_chain()["CG"], self.get_side_chain()["SD"], self.get_side_chain()["CE"])
+    
+    if self.get_res_type() == "ARG":
+      return Atom.dihedral(self.get_side_chain()["CB"], self.get_side_chain()["CG"], self.get_side_chain()["CD"], self.get_side_chain()["NE"])
+    
+    if self.get_res_type() == "GLN":
+      return Atom.dihedral(self.get_side_chain()["CB"], self.get_side_chain()["CG"], self.get_side_chain()["CD"], self.get_side_chain()["NE2"])
+    
+    if self.get_res_type() == "GLU":
+      return Atom.dihedral(self.get_side_chain()["CB"], self.get_side_chain()["CG"], self.get_side_chain()["CD"], self.get_side_chain()["OE2"])
+    
+
   def compute_Chi4(self):
     """
     Function that computes Chi4 for the current amino acid.
