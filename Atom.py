@@ -129,9 +129,9 @@ class Atom:
     angle = v1.angle(v4)
 
     if v.dot_product(v23) > 0:
-      return angle
-    else :
       return -angle
+    else :
+      return angle
 
 if __name__ == "__main__":	
   print("Testing Class Atom")

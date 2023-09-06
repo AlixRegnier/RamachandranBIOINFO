@@ -13,7 +13,7 @@ class AminoAcid :
       self.side_chain[atom_side_chain.get_name()] = atom_side_chain
 	
   def __str__(self):
-    s = "Amino acid number {} of type {} with a list of {} atoms".format(self.get_res_number(), self.get_res_type(), len(self.get_backbone()))
+    s = "Amino acid number {} of type {} with a list of {} atoms".format(self.get_res_number(), self.get_res_type(), len(self.get_backbone()) + len(self.get_side_chain()))
     return(s)    
     
   def get_N(self):
@@ -79,24 +79,44 @@ class AminoAcid :
     """
     self.side_chain = new_chain
 
-  def compute_Chi(self):
+  def compute_Chi1(self):
     """
     Function that compute angle of all possible Chi.
     """
-    pass
+    Chi_0 = ["ALA", "GLY"]
+    
+    if self.get_res_type() in Chi_0 :
+      return False
+    
+    Chi_2C =  ["THR", "ASN", "GLN", "GLU", "ASP", "LYS", "ARG", "HIS", "MET", "TRP", "PHE", "TYR", "LEU", "PRO"]
+    
+    if self.get_res_type() in Chi_2C :
+      return Atom.dihedral(self.get_N(), self.get_CA(), self.get_side_chain()["CB"],self.get_side_chain()["CG"])
+    
+    Chi_CG1= ["VAl", "ILE"]
+
+    if self.get_res_type() in Chi_CG1 :
+      return Atom.dihedral(self.get_N(), self.get_CA(), self.get_side_chain()["CB"], self.get_side_chain()["CG1"])
+    
+    if self.get_res_type() == "CYS" :
+      return Atom.dihedral(self.get_N(), self.get_CA(), self.get_side_chain()["CB"], self.get_side_chain()["SG"])
+    
+    if self.get_res_type() == "SER" :
+      return Atom.dihedral(self.get_N(), self.get_CA(), self.get_side_chain()["CB"], self.get_side_chain()["OG"])
 
 if __name__ == "__main__":	
   print("Testing Class AminoAcid")
   atom1 = Atom("H",18.0,9.5,192.5)
   atom2 = Atom("C",18.0,9.5,0)
-  atom3 = Atom("O",0,0,1)
-  atom4=Atom("X",1,2,3)
+  atomCG = Atom("CG",0,0,1)
+  atomCB=Atom("CB",1,2,3)
   atomN=Atom("N",-1.115,8.537,7.075)
   atomCA=Atom("CA",-1.925,7.470,6.547)
-  Amino = AminoAcid("ALA",2, [atom2,atomCA,atom2,atom3],[atom1])
-  print(Amino.get_backbone())
+  Amino = AminoAcid("ASN",2, [atomN,atomCA,atom2,atom1],[atomCB, atomCG])
+  print(Amino.compute_Chi1())
   print(Amino)
-  """print(Amino)
+  """
   Amino.add(atom2)
   print(Amino)
-  print(Amino.get_CA())"""
+  print(Amino.get_CA())
+  """
