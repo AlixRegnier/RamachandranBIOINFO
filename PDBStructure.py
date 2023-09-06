@@ -72,10 +72,9 @@ class StructurePDB:
           chi1=residue.compute_Chi1()
         if residue.compute_Chi2():
           chi2=residue.compute_Chi2
+
         if chi1 != None and chi2 != None:
-          chi_ch2_point_list.append((chi1,chi2))
-        elif chi1 != None and chi2 == None:
-          chi_ch2_point_list.append(chi1)
+          chi_ch2_point_list.append((Point(chi1,chi2)))
         else :
           return False
       return chi_ch2_point_list
