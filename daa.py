@@ -1,49 +1,49 @@
-import sys
-from PDBStructure import *
+import argparse
+from PDBStructure import StructurePDB
+from Clustering import Kmeans, DBscan
+from ClusteringMeasures import ClusteringMeasures
+from plot import draw_plot
 
-if __name__=="__main__":
+if __name__ == "__main__":
+    #####################PARSING ARGUMENT###############################
+    argparser = argparse.ArgumentParser()
+    argparser.add_argument("-k", "--kmeans", metavar="k", action="store", default=3, help="Use Kmeans for clustering")
+    argparser.add_argument("-d", "--dbscan", metavar=("epsilon","min_points"), nargs=2, help="Use DBscan for clustering")
+    #argparser.add_argument("-chi", metavar="AA", nargs=1, help="Calculate Chi1 and Chi2 angles for <AA> amino acid")
+    argparser.add_argument("-o", "--output", action="store", metavar="file_prefix", help="Output the models Phi and Psi angles in tabulated files")
+    argparser.add_argument("--noplot", action="store_true", help="Don't render a plot")
+    argparser.add_argument("--nomeasure", action="store_true", help="Don't print measures")
+    argparser.add_argument("file", metavar="file", action="store", help="PDB file that contains at least one model")
 
-    error_message="""python daa.py <-d|-k> <k|e> [minpoints] <-phipsi|-chi> filename.pdb
-    -d\tdbscan clustering / -k : kmeans clustering
-    [k|e]\tnumber above 0
-    minpoint\tnumber above 0 - this parameter exist only if you have selecter dbscan
-    -phipsi\tto analyse the phi and psi angles / -chi : to analyse side chain chi angle
-    filename.pdb\thas to be a pdb file"""
+    #argparser.usage = "daa.py [-k k] [-d epsilon min_points] --phipsi [-o output_prefix]"
+    args = argparser.parse_args()
+    for k, v in args.__dict__.items():
+        print(k,v)
+    models = StructurePDB.readPDB(args.file) 
+    for i in range(len(models)):
+        phipsi = models[i].compute_dihedrals()
 
-    try :
-        if sys.argv[1] != '-k' and sys.argv[1] != '-d':
-            print(error_message)
-            exit()
-        if int(sys.argv[2]) <= 0:
-            print(error_message)
-            exit()
-        
-        if sys.argv[1] == "-d":
-            if sys.argv[4] != "-phipsi" and sys.argv[4] !="-chi" or (int(sys.argv[3]) <= 0):
-                print(error_message)
-                exit()
+        points = list(zip(*phipsi))
+        points = points[1:-1]
+        if args.dbscan:
+            clustering = DBscan(points, *list(map(float, args.dbscan)))
+            window_title = "DBscan clustering"
         else:
-            if sys.argv[3] != "-phipsi" and sys.argv[3] !="-chi":
-                print(error_message)
-                exit()
-    except IndexError:
-        print(error_message)
-        exit()
-    
-    if sys.argv[1] == '-k':
-        model_list=StructurePDB.readPDB(sys.argv[3])
-    else:
-        model_list=StructurePDB.readPDB(sys.argv[4])
+            clustering = Kmeans(points, int(args.kmeans))
+            window_title = "Kmeans clustering"
 
-    point_list=[]
-    for i in range(0,len(model_list)):
-        a=model_list[i].compute_dihedrals()
-        point_list.extend(a.get_phi_psi())
-        model_list[i].write_dihedrals(f'phi_phi_angles_model_{i+1}')
-    
-    if sys.argv[1]=="-k":
-        pass
+        cp = clustering.getClusterPoints()
+        if not args.nomeasure:
+            measures = ClusteringMeasures(cp)
+            print(f"#### Modèle {i+1} ####")
+            print("Silhouette coefficient", measures.coefficient_silhouette())
+            print("Dunn score:", measures.indice_dunn())
+            print("Dunn score (using centroids):", measures.indice_dunn(True))
+        
+        if not args.noplot:
+            draw_plot(f"Modèle {i+1}",window_title , cp)
 
-    else:
-        pass
+        if args.output:
+            clustering.write_file(f"{args.output}{i+1}.tsv")
 
+    ####################################################################

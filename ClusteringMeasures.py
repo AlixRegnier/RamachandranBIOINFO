@@ -65,7 +65,7 @@ class ClusteringMeasures:
 		count = 0
 		for v in self.clusters[p.id_cluster]:
 			if v != p:
-				sum += ClusteringMeasures.distance(p.x, p.y, v.x, v.y)
+				sum += ClusteringMeasures.distance(p.abs, p.ord, v.abs, v.ord)
 				count += 1
 		
 		return sum / count
@@ -89,7 +89,7 @@ class ClusteringMeasures:
 		for c in self.clusters.keys() - {p.id_cluster}:
 			sum = 0
 			for v in self.clusters[c]:
-				sum += ClusteringMeasures.distance(p.x, p.y, v.x, v.y)
+				sum += ClusteringMeasures.distance(p.abs, p.ord, v.abs, v.ord)
 			
 			dist = sum / len(self.clusters[c])
 
@@ -148,7 +148,7 @@ class ClusteringMeasures:
 		dmax = -1
 		for i in range(len(self.clusters[cluster])):
 			for j in range(i+1, len(self.clusters[cluster])):
-				d = ClusteringMeasures.distance(self.clusters[cluster][i].x, self.clusters[cluster][i].y, self.clusters[cluster][j].x, self.clusters[cluster][j].y)
+				d = ClusteringMeasures.distance(self.clusters[cluster][i].abs, self.clusters[cluster][i].ord, self.clusters[cluster][j].abs, self.clusters[cluster][j].ord)
 				if d > dmax:
 					dmax = d
 		return dmax 
@@ -168,8 +168,8 @@ class ClusteringMeasures:
 		"""
 		sx, sy = 0, 0
 		for p in self.clusters[cluster]:
-			sx += p.x
-			sy += p.y
+			sx += p.abs
+			sy += p.ord
 
 		return Point(sx / len(self.clusters[cluster]), sy / len(self.clusters[cluster]))
 
@@ -189,7 +189,7 @@ class ClusteringMeasures:
 		sum = 0
 		for i in range(len(self.clusters[cluster])):
 			for j in range(i+1, len(self.clusters[cluster])):
-				sum += ClusteringMeasures.distance(self.clusters[cluster][i].x, self.clusters[cluster][i].y, self.clusters[cluster][j].x, self.clusters[cluster][j].y)
+				sum += ClusteringMeasures.distance(self.clusters[cluster][i].abs, self.clusters[cluster][i].ord, self.clusters[cluster][j].abs, self.clusters[cluster][j].ord)
 		return 2 / (len(self.clusters[cluster]) * (len(self.clusters[cluster]) - 1)) * sum
 
 	def intra_distance_centroid(self, cluster):
@@ -208,7 +208,7 @@ class ClusteringMeasures:
 		centroid = self.cluster_centroid(cluster)
 		sum = 0
 		for p in self.clusters[cluster]:
-			sum += ClusteringMeasures.distance(p.x, p.y, centroid.x, centroid.y)
+			sum += ClusteringMeasures.distance(p.abs, p.ord, centroid.abs, centroid.ord)
 		return sum / len(self.clusters[cluster])
 
 	def inter_min_distance(self, c1, c2):
@@ -227,7 +227,7 @@ class ClusteringMeasures:
 		min = -1
 		for p1 in self.clusters[c1]:
 			for p2 in self.clusters[c2]:
-				d = ClusteringMeasures.distance(p1.x, p1.y, p2.x, p2.y)
+				d = ClusteringMeasures.distance(p1.abs, p1.ord, p2.abs, p2.ord)
 				if min == -1 or d < min:
 					min = d
 		return min
@@ -249,7 +249,7 @@ class ClusteringMeasures:
 		centroid1 = self.cluster_centroid(c1)
 		centroid2 = self.cluster_centroid(c2)
 
-		return ClusteringMeasures.distance(centroid1.x, centroid1.y, centroid2.x, centroid2.y)
+		return ClusteringMeasures.distance(centroid1.abs, centroid1.ord, centroid2.abs, centroid2.ord)
 
 	def indice_dunn(self, centroid = False):
 		"""
