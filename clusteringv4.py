@@ -195,15 +195,14 @@ class DBscan(ClusteringMethods):
         This function return the tuple list of all core points.
 
         Parameters:
-
+        -----------
         min_points: Integer.
             Contains the minimal number of points to create a cluster.
-
         epsilon: Float.
             Contains the minimal distance to consider two point like neighbor.
 
         Returns:
-
+        --------
         List
             Tuple list of all cores.
         """
@@ -224,18 +223,16 @@ class DBscan(ClusteringMethods):
         This function return the tuple list of all neighbor for a point.
 
         Parameters:
-
+        -----------
         min_points: Integer.
             Contains the minimal number of points to create a cluster.
-
         epsilon: Float.
             Contains the minimal distance to consider two point like neighbor.
-
         starting_point: Tuple.
             Coordinate of the starting point.
 
         Returns:
-
+        --------
         List
             Tuple list of all neighbor for a starting point.
         """
@@ -257,18 +254,16 @@ class DBscan(ClusteringMethods):
         This function return the tuple list for all neighbor for a list of points.
 
         Parameters:
-
+        -----------
         min_points: Integer.
             Contains the minimal number of points to create a cluster.
-
         epsilon: Float.
             Contains the minimal distance to consider two point like neighbor.
-
         liste_to_parse: List.
             Contains the list of tuple for all neighbor for a point.
             
         Returns:
-
+        --------
         List
             Tuple list of all neighbor for a list of points. It's a cluster.
         """
@@ -286,15 +281,14 @@ class DBscan(ClusteringMethods):
         This function return a list of tuple list. Each list represente a cluster.
 
         Parameters:
-
+        -----------
         min_points: Integer.
             Contains the minimal number of points to create a cluster.
-
         epsilon: Float.
             Contains the minimal distance to consider two point like neighbor.
             
         Returns:
-
+        --------
         List
             List of tuple liste. Contains all clusters.
         """
