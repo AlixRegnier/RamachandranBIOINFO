@@ -8,7 +8,7 @@ class StructurePDB:
   def __init__(self, AminoAcidlist): 
     ''' Initializes the class StructurePDB, which has two attributes: 
         1)residues of the AA
-        2)list of angles phi and psi, li
+        2)list of point with as coordinate the angles phi and psi, li
         Parameters
         ----------
         AminoAcidList = list
@@ -191,7 +191,6 @@ class StructurePDB:
 
 
 
-
 #	public static void main(String[] args) throws FileNotFoundException{
 #		StructurePDB tey = new StructurePDB("D:/workspace/Enseignement/src/ramachandran/1TEY.pdb");
 #		tey.readPDBFile();
@@ -206,16 +205,17 @@ class StructurePDB:
 #	}
 iS = StructurePDB.readPDB("1TEY.pdb")
 
+iS[0].write_dihedrals("phipsi")
 
 
 
-dic=dict()
-for i in iS[0].get_residues():
-  print(i.get_res_type(), i.get_res_number(), len(i.get_backbone()), len(i.get_side_chain()))
-  if not (i.get_res_type() in dic):
-    dic[i.get_res_type()]=[len(i.get_side_chain())]
-  else:
-    dic[i.get_res_type()].append(len(i.get_side_chain()))
+# dic=dict()
+# for i in iS[0].get_residues():
+#   print(i.get_res_type(), i.get_res_number(), len(i.get_backbone()), len(i.get_side_chain()))
+#   if not (i.get_res_type() in dic):
+#     dic[i.get_res_type()]=[len(i.get_side_chain())]
+#   else:
+#     dic[i.get_res_type()].append(len(i.get_side_chain()))
 
-print(dic)
+# print(dic)
 
