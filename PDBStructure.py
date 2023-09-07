@@ -136,35 +136,3 @@ class StructurePDB:
 
       return model_list
           
-
-
-
-
-
-#	public static void main(String[] args) throws FileNotFoundException{
-#		StructurePDB tey = new StructurePDB("D:/workspace/Enseignement/src/ramachandran/1TEY.pdb");
-#		tey.readPDBFile();
-#		tey.computeDihedrals();
-#		
-#		KMeans k4 = new KMeans(tey.phipsi,4);
-#		System.out.println(k4);
-#		k4.clusterize();
-#		System.out.println(k4);
-		
-#		k4.printOutput();
-#	}
-iS = StructurePDB.readPDB("1TEY.pdb")
-
-
-
-
-dic=dict()
-for i in iS[0].get_residues():
-  print(i.get_res_type(), i.get_res_number(), len(i.get_backbone()), len(i.get_side_chain()))
-  if not (i.get_res_type() in dic):
-    dic[i.get_res_type()]=[len(i.get_side_chain())]
-  else:
-    dic[i.get_res_type()].append(len(i.get_side_chain()))
-
-print(dic)
-
