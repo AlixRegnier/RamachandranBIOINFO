@@ -5,12 +5,34 @@ from random import sample, choice
 from math import sqrt
 
 class ClusteringMethods(ABC):
+    """
+    Class that contains some algorithms for clustering 2D points
+    """
     def __init__(self, l_points):
+        """
+        Initialize the class with points
+
+        Parameters:
+        -----------
+        l_points : list<tuple<float>>
+        A list of tuple with two dimensions
+        """
         self.l_points = [Point(*p) for p in l_points]
         self.clusters = []
 
     @staticmethod
     def distance(p1, p2):
+        """
+        Calculate the euclidian distance between two points
+
+        Parameters:
+        -----------
+        p1, p2 : Point
+
+        Returns:
+        --------
+        return : float
+        """
         return sqrt((p1.abs - p2.abs)**2 + (p1.ord - p2.ord) ** 2)
 
     def write_file(self, filename):
