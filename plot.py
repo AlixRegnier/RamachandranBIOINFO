@@ -1,6 +1,5 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from Point import Point
 
 def draw_plot(name, windom_title, list_cluster_point):
     x=[]

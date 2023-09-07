@@ -297,23 +297,3 @@ class AminoAcid :
       return False
     else:
       return Atom.dihedral(self.get_side_chain()["CD"], self.get_side_chain()["NE"], self.get_side_chain()["CZ"], self.get_side_chain()["NH2"])
-    
-
-
-
-if __name__ == "__main__":	
-  print("Testing Class AminoAcid")
-  atomCD = Atom("ND2",18.0,9.5,192.5)
-  atom2 = Atom("C",18.0,9.5,0)
-  atomCG = Atom("CG",0,0,1)
-  atomCB=Atom("CB",1,2,3)
-  atomN=Atom("N",-1.115,8.537,7.075)
-  atomCA=Atom("CA",-1.925,7.470,6.547)
-  Amino = AminoAcid("ALA",2, [atomN,atomCA,atom2,atom2])
-  print(Amino.compute_Chi2())
-  print(Amino)
-  """
-  Amino.add(atom2)
-  print(Amino)
-  print(Amino.get_CA())
-  """

@@ -125,21 +125,3 @@ class Point:
 
   def __hash__(self) -> int:
     return id(self)
-
-if __name__ == "__main__":	
-    pA = Point(0,0)
-    pB = Point(1,1)
-    pC = Point(2,1)
-    pD = Point(3,4)
-
-    print(pA)
-    print(pB)
-    print(pC)
-    print(pD)
-
-    pA.add(pB)
-    assert pA.get_abs() == 1, 'Error in Point.add'
-    pA.rescale(5)
-    assert pA.get_abs() == 5, 'Error in Point.rescale'
-    assert pD.distance_from_origin() == 5, 'Error in Point.distance_from_origin'
-    assert pB.distance(pC) == 1, 'Error in Point.distance'

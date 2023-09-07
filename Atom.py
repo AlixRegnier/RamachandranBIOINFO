@@ -219,34 +219,3 @@ class Atom:
       return -angle
     else :
       return angle
-
-if __name__ == "__main__":	
-  print("Testing Class Atom")
-  atom1 = Atom("H",18.0,9.5,192.5)
-  atom2 = Atom("C",18.0,9.5,0)
-  atom3 = Atom("O",0,0,1)
-  atom4=Atom("X",1,2,3)
-  atomN=Atom("N",-1.115,8.537,7.075)
-  atomCA=Atom("CA",-1.925,7.470,6.547)
-  #print(atom1.dihedral(atom2,atom3,atom4))
-
-  """
-  print(atomN.norm())
-  print(atomCA.norm())
-  print(atomN.distance(atomCA))
-  print(atomCA.distance(atomN))
-  print(atomN.substract(atomCA))
-  print(atomCA.substract(atomN))
-  print(atomN.dot_product(atomCA))
-  print(atomN.cross_product(atomCA))
-  print(atomN.angle(atomCA))
-  """
-
-  #print(atom1.cross_product(atom2))
-  #print(atom2.cross_product(atom1))
-  #print(atom4.cross_product(atom1))
-  #print(atom3.distance(atom4))
-  #print(atom1.dot_product(atom2))
-  #print(atom2.dihedral(atom3, atom4, atom1))
-  #print(atom2)
-  #print(atom3)

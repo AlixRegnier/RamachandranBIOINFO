@@ -1,8 +1,9 @@
-from AminoAcid import AminoAcid
-from Atom import Atom
-from Point import Point
+from ..AminoAcid import AminoAcid
+from ..Atom import Atom
+from ..Point import Point
 import os
-from PDBStructure import StructurePDB
+from ..PDBStructure import StructurePDB
+
 try :
     iS = StructurePDB.readPDB("1TEY.pdb")
     #iS[1].compute_dihedrals()
