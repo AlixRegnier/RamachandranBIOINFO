@@ -42,6 +42,10 @@ if __name__=="__main__":
         coordonates_list[1].extend(a[1])
         model_list[i].write_dihedrals(f'phi_phi_angles_model_{i+1}')
     
-    if sys.argv[1]=="-k"
+    if sys.argv[1]=="-k":
+        
+
+    if sys.argv[1]=="-d":
+
 
 
