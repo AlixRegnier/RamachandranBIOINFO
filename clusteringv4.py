@@ -25,7 +25,7 @@ class ClusteringMethods(ABC):
         -----------
         Returns:
         --------
-        list of list that contains clusters
+            List of list that contains clusters.
         """ 
         return [cluster[:] for cluster in self.clusters]
 
@@ -34,10 +34,10 @@ class ClusteringMethods(ABC):
         This function permit to create a tabulated file with phi, psi, cluster_number.
         Parameters:
         -----------
-        list_res_cluster : list
-        list of list that contains clusters
-        filename_cluster : string
-        name of filename to create
+        list_res_cluster : List.
+            List of list that contains clusters.
+        filename_cluster : String.
+            Name of filename to create.
         Returns:
         --------
         """ 
@@ -82,7 +82,7 @@ class Kmeans(ClusteringMethods):
         Returns:
         --------
         Point
-        Point considered as centroid.
+            Point considered as centroid.
         """
         return sample(self.l_points, self.k)
 
@@ -92,11 +92,12 @@ class Kmeans(ClusteringMethods):
         This function permit to pick a random centroid for the initialization.
         Parameters:
         -----------
-        list_centroid : list
+        list_centroid : List.
+            Centroid in list.
         Returns:
         --------
-        list_cluster : list
-        Clusters in a list
+        list_cluster : List.
+            Clusters in a list.
         """ 
         for centroid in range(len(list_centroid)):
             if type(centroid) != tuple() :
@@ -126,12 +127,12 @@ class Kmeans(ClusteringMethods):
         This function permit to calculate the mean of a cluster.
         Parameters:
         -----------
-        list_cluster : list
-        Clusters in a list
+        list_cluster : List.
+            Clusters in a list.
         Returns:
         --------
-        list_new_centroid : list
-        New centroids in a list
+        list_new_centroid : List.
+            New centroids in a list.
         """ 
         for cluster in list_cluster:
             if cluster != list():
