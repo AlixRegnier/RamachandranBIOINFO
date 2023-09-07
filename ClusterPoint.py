@@ -29,4 +29,4 @@ class ClusterPoint(Point):
 		Information about the ClusterPoint instance
 		"""
 		
-		return f"x: {self.x} | y: {self.y} | id_cluster: {self.id_cluster}"
+		return f"x: {self.abs} | y: {self.ord} | id_cluster: {self.id_cluster}"
