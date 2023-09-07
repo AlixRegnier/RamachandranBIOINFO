@@ -1,7 +1,7 @@
 ### test binome 1 ###
 #######  AA  #######
-from AminoAcid import AminoAcid
-from Atom import Atom
+from ..AminoAcid import AminoAcid
+from ..Atom import Atom
 
 N = Atom("N",4.524,9.887,-0.667)
 CA = Atom("CA", 5.918, 10.123,-0.175)

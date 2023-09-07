@@ -1,4 +1,4 @@
-from Atom import *
+from ..Atom import *
 import math
 
 try:

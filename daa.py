@@ -17,8 +17,7 @@ if __name__ == "__main__":
 
     #argparser.usage = "daa.py [-k k] [-d epsilon min_points] --phipsi [-o output_prefix]"
     args = argparser.parse_args()
-    for k, v in args.__dict__.items():
-        print(k,v)
+    
     models = StructurePDB.readPDB(args.file) 
     for i in range(len(models)):
         phipsi = models[i].compute_dihedrals()
