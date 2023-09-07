@@ -2,7 +2,6 @@ from math import sqrt
 
 class Point:
   ''' Creates and manipulates objects of type Point. '''
-  
   def __init__(self, x = 0.00, y = 0.00):
     ''' Initializes the class Point, which has two attributes: 
         1)coordinate on x axis
@@ -118,21 +117,29 @@ class Point:
     return sqrt((self.get_abs() - another_point.get_abs() )**2 + \
                 (self.get_ord() - another_point.get_ord() )**2 )
 
+  def __eq__(self, o):
+    return o.abs == self.abs and o.ord == o.abs
+
+  def __ne__(self, o):
+    return not self.__eq__(o)
+
+  def __hash__(self) -> int:
+    return id(self)
 
 if __name__ == "__main__":	
-  pA = Point(0,0)
-  pB = Point(1,1)
-  pC = Point(2,1)
-  pD = Point(3,4)
+    pA = Point(0,0)
+    pB = Point(1,1)
+    pC = Point(2,1)
+    pD = Point(3,4)
 
-  print(pA)
-  print(pB)
-  print(pC)
-  print(pD)
+    print(pA)
+    print(pB)
+    print(pC)
+    print(pD)
 
-  pA.add(pB)
-  assert pA.get_abs() == 1, 'Error in Point.add'
-  pA.rescale(5)
-  assert pA.get_abs() == 5, 'Error in Point.rescale'
-  assert pD.distance_from_origin() == 5, 'Error in Point.distance_from_origin'
-  assert pB.distance(pC) == 1, 'Error in Point.distance'
+    pA.add(pB)
+    assert pA.get_abs() == 1, 'Error in Point.add'
+    pA.rescale(5)
+    assert pA.get_abs() == 5, 'Error in Point.rescale'
+    assert pD.distance_from_origin() == 5, 'Error in Point.distance_from_origin'
+    assert pB.distance(pC) == 1, 'Error in Point.distance'
