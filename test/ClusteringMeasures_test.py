@@ -1,7 +1,6 @@
-from ClusterPoint import *
-from Point import Point
-from ClusteringMeasures import *
-from typing import List, Union
+from ..ClusterPoint import *
+from ..Point import Point
+from ..ClusteringMeasures import *
 
 try :
     a = ClusteringMeasures("angles_1TEY_small_clust1.txt")
